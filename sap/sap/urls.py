@@ -17,11 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 """Importamos las bibliotecas para llamar funciones"""
-from webapp.views import bienvenido, despedirse, contacto
+from webapp.views import bienvenido, prueba
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', bienvenido),
-    path('despedida', despedirse),
-    path('contacto', contacto)
+    path('Sistema', prueba),
 ]
