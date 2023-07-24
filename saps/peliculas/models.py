@@ -8,14 +8,14 @@ class Directore(models.Model):
     nacionalidad = models.CharField(max_length=255)
 
     def __str__(self):
-        return f'Domicilio {self.id}: {self.nombre} {self.apellido} {self.nacionalidad}'
+        return f'{self.nombre} {self.apellido} '
 
 
 class Genero(models.Model):
     nombre = models.CharField(max_length=255)
 
     def __str__(self):
-        return f'Domicilio {self.id}: {self.nombre} '
+        return f'{self.nombre} '
 
 
 class Pelicula(models.Model):
@@ -24,11 +24,12 @@ class Pelicula(models.Model):
     duracion = models.TimeField()
     sinopsis = models.CharField(max_length=255)
     calificacion = models.IntegerField()
+    portada = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     director = models.ForeignKey(Directore, on_delete=models.SET_NULL, null=True)
     genero = models.ForeignKey(Genero, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f'Domicilio {self.id}: {self.titulo} {self.f_estreno} {self.duracion} {self.sinopsis} {self.calificacion}'
+        return f'Pelicula {self.id}: {self.titulo} {self.f_estreno} {self.duracion} {self.sinopsis} {self.calificacion}'
 
 
 class Serie(models.Model):
@@ -38,8 +39,9 @@ class Serie(models.Model):
     temporadas = models.IntegerField()
     sinopsis = models.CharField(max_length=255)
     calificacion = models.IntegerField()
+    portada = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     director = models.ForeignKey(Directore, on_delete=models.SET_NULL, null=True)
     genero = models.ForeignKey(Genero, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
-        return f'Domicilio {self.id}: {self.titulo} {self.f_inicio} {self.f_fin} {self.temporadas} {self.sinopsis} {self.calificacion}'
+        return f'Serie {self.id}: {self.titulo} {self.f_inicio} {self.f_fin} {self.temporadas} {self.sinopsis} {self.calificacion}'

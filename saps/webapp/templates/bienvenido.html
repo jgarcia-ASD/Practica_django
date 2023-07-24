@@ -10,9 +10,11 @@
 <nav class="navbar bg-dark border-bottom border-bottom-dark " data-bs-theme="dark">
     <div class="container-fluid">
         <a class="navbar-brand" href="admin">App Streaming</a>
-        <a class="nav-link" href="{% url 'index' %}">index de principal</a>
-        <a class="nav-link" href="{% url 'indexDirectore' %}">index de directores</a>
-        <a class="nav-link" href="#">index de personas</a>
+        <a class="nav-link" href="{% url 'index' %}">principal</a>
+        <a class="nav-link" href="{% url 'indexDirectore' %}">directores</a>
+        <a class="nav-link" href="{% url 'indexGenero' %}">generos</a>
+        <a class="nav-link" href="{% url 'indexPelicula' %}">peliculas</a>
+        <a class="nav-link" href="pruebanuevo">series</a>
         <form class="d-flex" method="POST">
             <input class="form-control me-2" type="text" name="buscar" aria-label="Search" placeholder="Buscar">
             <button class="btn btn-outline-success" type="submit">Buscar</button>

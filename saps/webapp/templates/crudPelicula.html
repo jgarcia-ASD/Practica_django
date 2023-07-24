@@ -21,6 +21,7 @@
     <table class="table table-bordered table-dark">
         <thead>
         <tr>
+            <th>Portada</th>
             <th>Titulo</th>
             <th>Fecha Estreno</th>
             <th>Duracion</th>
@@ -34,6 +35,7 @@
         <tbody>
         {% for Pelicula in li_pelicula %}
             <tr>
+                <td> <img src="{{ static 'Pelicula.portada' }}"> </td>
                 <td>{{ Pelicula.titulo }}</td>
                 <td>{{ Pelicula.f_estreno }}</td>
                 <td>{{ Pelicula.duracion }}</td>

@@ -16,27 +16,37 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
-from peliculas.views import detallePelicula, editarPelicula, detalleDirectore, nuevoDirectore, editarDirectore, \
-    eliminarDirectore
-from webapp.views import bienvenido, crudPelicula, crudDirectore
+from peliculas.views import detallePelicula,editarPelicula, nuevaPelicula, eliminarPelicula, detalleDirectore, nuevoDirectore, editarDirectore, \
+    eliminarDirectore, detalleGenero, nuevoGenero, editarGenero, eliminarGenero
+from webapp.views import bienvenido, crudPelicula, crudDirectore, crudGenero
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', bienvenido, name='index'),
-    path('persona', crudPelicula, name='indexPelicula'),
-    path('detalle_persona/<int:id>', detallePelicula),
-    # path('nueva_persona', nuevaParticipante),
-    path('editar_persona/<int:id>', editarPelicula),
-    # path('eliminar_persona/<int:id>', eliminarParticipante),
-    # path('domicilio', crudDomicilio, name='indexDomicilio'),
-    # path('detalle_domicilio/<int:id>', detalleDomicilio),
-    # path('nuevo_domicilio', nuevoDomicilio),
-    # path('editar_domicilio/<int:id>', editarDomicilio),
-    # path('eliminar_domicilio/<int:id>', eliminarDomicilio),
     path('director', crudDirectore, name='indexDirectore'),
     path('detalle_directore/<int:id>', detalleDirectore),
     path('nuevo_directore', nuevoDirectore),
     path('editar_directore/<int:id>', editarDirectore),
     path('eliminar_directore/<int:id>', eliminarDirectore),
+    path('genero', crudGenero, name='indexGenero'),
+    path('detalle_genero/<int:id>', detalleGenero),
+    path('nuevo_genero', nuevoGenero),
+    path('editar_genero/<int:id>', editarGenero),
+    path('eliminar_genero/<int:id>', eliminarGenero),
+    path('', bienvenido, name='index'),
+    path('pelicula', crudPelicula, name='indexPelicula'),
+    path('detalle_pelicula/<int:id>', detallePelicula),
+    path('nueva_pelicula', nuevaPelicula),
+    path('editar_pelicula/<int:id>', editarPelicula),
+    path('eliminar_pelicula/<int:id>', eliminarPelicula),
+    # path('domicilio', crudDomicilio, name='indexDomicilio'),
+    # path('detalle_domicilio/<int:id>', detalleDomicilio),
+    # path('nuevo_domicilio', nuevoDomicilio),
+    # path('editar_domicilio/<int:id>', editarDomicilio),
+    # path('eliminar_domicilio/<int:id>', eliminarDomicilio),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

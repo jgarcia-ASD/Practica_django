@@ -1,0 +1,84 @@
+{% extends 'bienvenido.html' %}
+
+{% block content %}
+    <head>
+        {% load static %}
+        <meta charset="UTF-8">
+        <title>Crud Directores</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    </head>
+
+    <!-- la alerta para confirmar -->
+    {% block js %}
+        <script>
+            function eliminar(id) {
+                Swal.fire({
+                    title: '¿Esta seguro?',
+                    text: "Esta accion no se puede deshacer",
+                    color: '#fff',
+                    icon: 'warning',
+                    iconColor: '#f11f1f',
+                    showCancelButton: true,
+                    confirmButtonColor: '#23730e',
+                    cancelButtonColor: '#a92a2a',
+                    confirmButtonText: 'Si, quiero eliminarlo',
+                    background: '#262626',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        Swal.fire({
+                            title: '¡Eliminado!',
+                            text: 'El genero ha sido eliminado.',
+                            color: '#fff',
+                            background: '#262626',
+                            showConfirmButton: false
+                        })
+                        setTimeout(function () {
+                            window.location.href = "eliminar_genero/" + id
+                        }, 1500)
+
+                    }
+                })
+            }
+        </script>
+    {% endblock %}
+    <body class="p-3 mb-2 bg-black text-white position-relative">
+    <h1 class="h1"><span class="border-bottom border-3">Sistema de administración de Genero</span></h1>
+    <div>
+        Cantidad de Generos: {{ no_generos }}
+    </div>
+    <div>
+        <a href="nuevo_genero" class="badge badge-pill badge-dark">Agregar un nuevo genero <i
+                class="bi bi-database-fill-add"></i></a>
+    </div>
+    <div>
+        <table class="table table-bordered table-dark">
+            <thead>
+            <tr>
+                <th>tipo</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for Genero in li_generos %}
+                <tr>
+                    <td>{{ Genero.nombre }}</td>
+                    <td><a href="detalle_genero/{{ Genero.id }}" class="badge badge-secondary"><i
+                            class="bi bi-eye"></i></a></td>
+                    <td><a href="editar_genero/{{ Genero.id }}" class="badge badge-secondary"><i
+                            class="bi bi-pencil-square"></i></a></td>
+                    <td><a href="#" class="badge badge-secondary" onclick="eliminar({{ Genero.id }})"><i
+                            class="bi bi-trash"></i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </body>
+    </html>
+{% endblock %}

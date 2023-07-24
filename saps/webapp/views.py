@@ -2,7 +2,8 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
 
-from peliculas.models import Pelicula, Directore
+
+from peliculas.models import Pelicula, Directore, Genero
 
 
 #from personas.models import Participante, Domicilio
@@ -38,15 +39,27 @@ def crudDirectore(request):
     busqueda = request.POST.get('buscar')
     no_directores = Directore.objects.count()
     li_directores = Directore.objects.all()
-    #buscar personas
+    #buscar
     if busqueda:
-        li_personas = Directore.objects.filter(
+        li_directores = Directore.objects.filter(
             Q(nombre__icontains= busqueda) |
             Q(apellido__icontains= busqueda) |
             Q(nacionalidad__icontains= busqueda)
             ).distinct()
 
     return render(request, 'crudDirectore.html', {'no_directores': no_directores, 'li_directores': li_directores})
+
+def crudGenero(request):
+    busqueda = request.POST.get('buscar')
+    no_generos = Genero.objects.count()
+    li_generos = Genero.objects.all()
+    #buscar
+    if busqueda:
+        li_generos = Genero.objects.filter(
+            Q(nombre__icontains= busqueda)
+            ).distinct()
+
+    return render(request, 'crudGenero.html', {'no_generos': no_generos, 'li_generos': li_generos})
 
 
 def crudPelicula(request):
@@ -65,19 +78,5 @@ def crudPelicula(request):
 
     return render(request, 'crudPelicula.html', {'no_pelicula':no_pelicula , 'li_pelicula': li_pelicula})
 
-def prueba(request):
-    return render(request, 'sistemaSolar.html')
 
-def crudDomicilio(request):
-    busqueda = request.POST.get('buscar')
-    no_domicilio = Domicilio.objects.count()
-    li_domicilio = Domicilio.objects.all()
-    # buscar personas
-    if busqueda:
-        li_domicilio = Domicilio.objects.filter(
-            Q(calle__icontains=busqueda) |
-            Q(no_calle__icontains=busqueda) |
-            Q(pais__icontains=busqueda)
-        ).distinct()
-    return render(request, 'crudDomicilio.html', {'no_domicilios': no_domicilio , 'li_domicilios': li_domicilio})
 
