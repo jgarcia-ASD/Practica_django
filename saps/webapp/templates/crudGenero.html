@@ -63,21 +63,25 @@
             <thead>
             <tr>
                 <th>tipo</th>
-                <th></th>
-                <th></th>
-                <th></th>
+                {% if user.is_authenticated %}
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
             {% for Genero in li_generos %}
                 <tr>
                     <td>{{ Genero.nombre }}</td>
+                    {% if user.is_authenticated %}
                     <td><a href="detalle_genero/{{ Genero.id }}" class="badge badge-secondary"><i
                             class="bi bi-eye"></i></a></td>
                     <td><a href="editar_genero/{{ Genero.id }}" class="badge badge-secondary"><i
                             class="bi bi-pencil-square"></i></a></td>
                     <td><a href="#" class="badge badge-secondary" onclick="eliminar({{ Genero.id }})"><i
                             class="bi bi-trash"></i></a></td>
+                    {% endif %}
                 </tr>
             {% endfor %}
             </tbody>

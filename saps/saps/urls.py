@@ -19,28 +19,30 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
-from peliculas.views import detallePelicula,editarPelicula, nuevaPelicula, eliminarPelicula, detalleDirectore, nuevoDirectore, editarDirectore, \
-    eliminarDirectore, detalleGenero, nuevoGenero, editarGenero, eliminarGenero
-from webapp.views import bienvenido, crudPelicula, crudDirectore, crudGenero
+from peliculas import views as peliculas_views
+from webapp import views as webapp_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('director', crudDirectore, name='indexDirectore'),
-    path('detalle_directore/<int:id>', detalleDirectore),
-    path('nuevo_directore', nuevoDirectore),
-    path('editar_directore/<int:id>', editarDirectore),
-    path('eliminar_directore/<int:id>', eliminarDirectore),
-    path('genero', crudGenero, name='indexGenero'),
-    path('detalle_genero/<int:id>', detalleGenero),
-    path('nuevo_genero', nuevoGenero),
-    path('editar_genero/<int:id>', editarGenero),
-    path('eliminar_genero/<int:id>', eliminarGenero),
-    path('', bienvenido, name='index'),
-    path('pelicula', crudPelicula, name='indexPelicula'),
-    path('detalle_pelicula/<int:id>', detallePelicula),
-    path('nueva_pelicula', nuevaPelicula),
-    path('editar_pelicula/<int:id>', editarPelicula),
-    path('eliminar_pelicula/<int:id>', eliminarPelicula),
+    path('inicioSession/', webapp_views.signin, name='inicioSession'),
+    path('crearSession/', webapp_views.signup, name='crearSession'),
+    path('cerrarsession/', webapp_views.signout, name='cerrar'),
+    path('director', webapp_views.crudDirectore, name='indexDirectore'),
+    path('detalle_directore/<int:id>', peliculas_views.detalleDirectore),
+    path('nuevo_directore', peliculas_views.nuevoDirectore),
+    path('editar_directore/<int:id>', peliculas_views.editarDirectore),
+    path('eliminar_directore/<int:id>', peliculas_views.eliminarDirectore),
+    path('genero', webapp_views.crudGenero, name='indexGenero'),
+    path('detalle_genero/<int:id>', peliculas_views.detalleGenero),
+    path('nuevo_genero', peliculas_views.nuevoGenero),
+    path('editar_genero/<int:id>', peliculas_views.editarGenero),
+    path('eliminar_genero/<int:id>', peliculas_views.eliminarGenero),
+    path('', webapp_views.bienvenido, name='index'),
+    path('pelicula', webapp_views.crudPelicula, name='indexPelicula'),
+    path('detalle_pelicula/<int:id>', peliculas_views.detallePelicula),
+    path('nueva_pelicula', peliculas_views.nuevaPelicula),
+    path('editar_pelicula/<int:id>', peliculas_views.editarPelicula),
+    path('eliminar_pelicula/<int:id>', peliculas_views.eliminarPelicula),
     # path('domicilio', crudDomicilio, name='indexDomicilio'),
     # path('detalle_domicilio/<int:id>', detalleDomicilio),
     # path('nuevo_domicilio', nuevoDomicilio),

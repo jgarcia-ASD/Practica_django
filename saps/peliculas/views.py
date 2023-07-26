@@ -3,10 +3,10 @@ import time
 from django.forms import modelform_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from .models import Pelicula, Directore, Genero
 
-from peliculas.models import Pelicula, Directore, Genero
-
-from peliculas.forms import DirectoreForm, GeneroForm, PeliculaForm
+from .forms import DirectoreForm, GeneroForm, PeliculaForm
 
 
 # Create your views here.
@@ -17,6 +17,7 @@ def detalleDirectore(request, id):
     return render(request, 'directore/detalle.html', {'directore': directore})
 
 
+@login_required
 def nuevoDirectore(request):
     if request.method == 'POST':
         formaDirectore = DirectoreForm(request.POST)
@@ -29,6 +30,7 @@ def nuevoDirectore(request):
     return render(request, 'directore/nuevo.html', {'formaDirectore': formaDirectore})
 
 
+@login_required
 def editarDirectore(request, id):
     directore = get_object_or_404(Directore, pk=id)
     if request.method == 'POST':
@@ -42,6 +44,7 @@ def editarDirectore(request, id):
     return render(request, 'directore/editar.html', {'formaDirectore': formaDirectore})
 
 
+@login_required
 def eliminarDirectore(request, id):
     directore = get_object_or_404(Directore, pk=id)
     if directore:
@@ -56,6 +59,7 @@ def detalleGenero(request, id):
     return render(request, 'genero/detalle.html', {'genero': genero})
 
 
+@login_required
 def nuevoGenero(request):
     if request.method == 'POST':
         formaGenero = GeneroForm(request.POST)
@@ -68,6 +72,7 @@ def nuevoGenero(request):
     return render(request, 'genero/nuevo.html', {'formaGenero': formaGenero})
 
 
+@login_required
 def editarGenero(request, id):
     genero = get_object_or_404(Genero, pk=id)
     if request.method == 'POST':
@@ -81,6 +86,7 @@ def editarGenero(request, id):
     return render(request, 'genero/editar.html', {'formaGenero': formaGenero})
 
 
+@login_required
 def eliminarGenero(request, id):
     genero = get_object_or_404(Genero, pk=id)
     if genero:
@@ -97,6 +103,7 @@ def detallePelicula(request, id):
 
 # PersonaForm = modelform_factory(Persona, exclude=[])
 
+@login_required
 def nuevaPelicula(request):
     if request.method == 'POST':
         formaPelicula = PeliculaForm(request.POST, request.FILES)
@@ -109,6 +116,7 @@ def nuevaPelicula(request):
     return render(request, 'peliculas/nuevo.html', {'formaPelicula': formaPelicula})
 
 
+@login_required
 def editarPelicula(request, id):
     pelicula = get_object_or_404(Pelicula, pk=id)
     if request.method == 'POST':
@@ -122,6 +130,7 @@ def editarPelicula(request, id):
     return render(request, 'peliculas/editar.html', {'formaPelicula': formaPelicula})
 
 
+@login_required
 def eliminarPelicula(request, id):
     pelicula = get_object_or_404(Pelicula, pk=id)
     if pelicula:

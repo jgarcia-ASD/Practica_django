@@ -1,13 +1,14 @@
 {% extends 'bienvenido.html' %}
 
 {% block content %}
-<head>
-    <meta charset="UTF-8">
-    <title>Crud Peliculas</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <title>Crud Peliculas</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+              integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+              crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    </head>
     <!-- la alerta para confirmar -->
     {% block js %}
         <script>
@@ -42,51 +43,56 @@
             }
         </script>
     {% endblock %}
-<body class="p-3 mb-2 bg-black text-white position-relative">
-<h1 class="h1"><span class="border-bottom border-3">Sistema de administración de personas (domicilios)</span></h1>
-<div>
-    Número de peliculas: {{ no_pelicula }}
-</div>
-<div>
-    <a href="nueva_pelicula" class="badge badge-pill badge-dark">Agregar una nueva pelicula <i
-            class="bi bi-database-fill-add"></i></a>
-</div>
-<div>
-    <table class="table table-responsive table-bordered table-dark table align-middle">
-        <thead>
-        <tr>
-            <th scope="col">Portada</th>
-            <th scope="col">Titulo</th>
-            <th scope="col">Fecha Estreno</th>
-            <th scope="col">Duracion</th>
-            <th scope="col" nowrap>Sinopsis</th>
-            <th scope="col">Calificacion</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for Pelicula in li_pelicula %}
+    <body class="p-3 mb-2 bg-black text-white position-relative">
+    <h1 class="h1"><span class="border-bottom border-3">Sistema de administración de personas (domicilios)</span></h1>
+    <div>
+        Número de peliculas: {{ no_pelicula }}
+    </div>
+    <div>
+        <a href="nueva_pelicula" class="badge badge-pill badge-dark">Agregar una nueva pelicula <i
+                class="bi bi-database-fill-add"></i></a>
+    </div>
+    <div>
+        <table class="table table-responsive table-bordered table-dark table align-middle">
+            <thead>
             <tr>
-                <td scope="row"> <img src="../media/{{ Pelicula.portada }}" alt="no encontrada" class="img-fluid"> </td>
-                <td>{{ Pelicula.titulo }}</td>
-                <td>{{ Pelicula.f_estreno }}</td>
-                <td>{{ Pelicula.duracion }}</td>
-                <td>{{ Pelicula.sinopsis }}</td>
-                <td>{{ Pelicula.calificacion }}</td>
-                <td><a href="detalle_pelicula/{{ Pelicula.id }}" class="badge badge-secondary"><i
-                        class="bi bi-eye"></i></a></td>
-                <td><a href="editar_pelicula/{{ Pelicula.id }}" class="badge badge-secondary"><i
-                        class="bi bi-pencil-square"></i></a></td>
-                <td><a href=#" class="badge badge-secondary" onclick="eliminar({{ Pelicula.id }})"><i
-                        class="bi bi-trash"></i></a></td>
+                <th scope="col">Portada</th>
+                <th scope="col">Titulo</th>
+                <th scope="col">Fecha Estreno</th>
+                <th scope="col">Duracion</th>
+                <th scope="col" nowrap>Sinopsis</th>
+                <th scope="col">Calificacion</th>
+                {% if user.is_authenticated %}
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                {% endif %}
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-</body>
-</html>
+            </thead>
+            <tbody>
+            {% for Pelicula in li_pelicula %}
+                <tr>
+                    <td scope="row"><img src="../media/{{ Pelicula.portada }}" alt="no encontrada" class="img-fluid">
+                    </td>
+                    <td>{{ Pelicula.titulo }}</td>
+                    <td>{{ Pelicula.f_estreno }}</td>
+                    <td>{{ Pelicula.duracion }}</td>
+                    <td>{{ Pelicula.sinopsis }}</td>
+                    <td>{{ Pelicula.calificacion }}</td>
+                    {% if user.is_authenticated %}
+                        <td><a href="detalle_pelicula/{{ Pelicula.id }}" class="badge badge-secondary"><i
+                                class="bi bi-eye"></i></a></td>
+                        <td><a href="editar_pelicula/{{ Pelicula.id }}" class="badge badge-secondary"><i
+                                class="bi bi-pencil-square"></i></a></td>
+                        <td><a href=#" class="badge badge-secondary" onclick="eliminar({{ Pelicula.id }})"><i
+                                class="bi bi-trash"></i></a></td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    </body>
+    </html>
 {% endblock %}

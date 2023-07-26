@@ -1,0 +1,14 @@
+{% extends 'bienvenido.html' %}
+
+{% block content %}
+    <h1>crear usuario</h1>
+    {{ error }}
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button>
+            Entrar
+        </button>
+    </form>
+{% endblock %}

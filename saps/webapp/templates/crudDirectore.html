@@ -57,9 +57,11 @@
             <th>Nombre</th>
             <th>Apellido</th>
             <th>Nacionalidad</th>
-            <th></th>
-            <th></th>
-            <th></th>
+            {% if user.is_authenticated %}
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            {% endif %}
         </tr>
         </thead>
         <tbody>
@@ -68,12 +70,14 @@
                 <td>{{ Directore.nombre }}</td>
                 <td>{{ Directore.apellido }}</td>
                 <td>{{ Directore.nacionalidad }}</td>
+                {% if user.is_authenticated %}
                 <td><a href="detalle_directore/{{ Directore.id }}" class="badge badge-secondary"><i
                         class="bi bi-eye"></i></a></td>
                 <td><a href="editar_directore/{{ Directore.id }}" class="badge badge-secondary"><i
                         class="bi bi-pencil-square"></i></a></td>
                 <td><a href="#" class="badge badge-secondary" onclick="eliminar({{ Directore.id }})"><i
                             class="bi bi-trash"></i></a></td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>
