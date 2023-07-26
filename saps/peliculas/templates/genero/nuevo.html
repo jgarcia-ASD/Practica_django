@@ -7,14 +7,18 @@
 </head>
 <body class="p-3 mb-2 bg-black text-white position-absolute top-50 start-50 translate-middle">
 <h1>Agregar genero </h1>
-<form method="POST">
-    <table class="table table-dark table-striped">
-        {{ formaGenero }}
-    </table>
-    <button class="btn btn-outline-light " type="submit" id='Enviar'>Enviar</button>
-    <a class="link-danger link-offset-2 link-underline link-underline-opacity-0" href="{% url 'indexGenero' %}"><button type="button" class="btn btn-outline-danger">Regresar</button></a>
-    {% csrf_token %}
-</form>
+<div id="formularioGenero">
+    <form method="POST">
+        <table class="table table-dark table-striped">
+            {{ formaGenero }}
+        </table>
+        <button class="btn btn-outline-light " type="submit" id='Enviar'>Enviar</button>
+        <a class="link-danger link-offset-2 link-underline link-underline-opacity-0" href="{% url 'indexGenero' %}">
+            <button type="button" class="btn btn-outline-danger">Regresar</button>
+        </a>
+        {% csrf_token %}
+    </form>
+</div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

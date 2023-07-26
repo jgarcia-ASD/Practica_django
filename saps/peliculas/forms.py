@@ -17,7 +17,7 @@ class PeliculaForm(ModelForm):
         fields = '__all__'
         widgets = {
             'f_estreno': DateInput(attrs={'type': 'date'}),
-            'duracion': TimeInput(attrs={'type': 'time'}),
+            'duracion': TextInput(attrs={'type': 'number'}),
             'calificacion': TextInput(attrs={'type': 'number'}),
             'portada': FileInput(attrs={'accept': 'image/*'})
         }

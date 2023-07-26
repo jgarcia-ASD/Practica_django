@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render
-
+from django.contrib import messages
 
 from peliculas.models import Pelicula, Directore, Genero
 
@@ -11,28 +11,8 @@ from peliculas.models import Pelicula, Directore, Genero
 
 # Create your views here.
 def bienvenido(request):
-    #busqueda = request.POST.get('buscar')
-    #no_personas = Participante.objects.count()
-    #li_personas = Participante.objects.all()
-    #no_domicilio = Domicilio.objects.count()
-    #li_domicilio = Domicilio.objects.all()
-    # buscar personas
-    #if busqueda:
-        #li_personas = Participante.objects.filter(
-            #Q(nombre__icontains=busqueda) |
-            #Q(apellido__icontains=busqueda) |
-            #Q(email__icontains=busqueda)
-        #).distinct()
-        #if li_personas:
-            #return render(request, 'crudPersona.html', {'no_personas': no_personas, 'li_personas': li_personas})
-        #li_domicilio = Domicilio.objects.filter(
-            #Q(calle__icontains=busqueda) |
-            #Q(no_calle__icontains=busqueda) |
-            #Q(pais__icontains=busqueda)
-        #).distinct()
-        #if li_domicilio:
-            #return render(request, 'crudDomicilio.html', {'no_domicilios': no_domicilio , 'li_domicilios': li_domicilio})
-    return render(request, 'bienvenido.html')
+    li_pelicula = Pelicula.objects.all()
+    return render(request, 'bienvenido.html', {'li_pelicula': li_pelicula})
 
 
 def crudDirectore(request):

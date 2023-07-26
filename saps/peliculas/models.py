@@ -21,8 +21,8 @@ class Genero(models.Model):
 class Pelicula(models.Model):
     titulo = models.CharField(max_length=255)
     f_estreno = models.DateField()
-    duracion = models.TimeField()
-    sinopsis = models.CharField(max_length=255)
+    duracion = models.IntegerField()
+    sinopsis = models.TextField()
     calificacion = models.IntegerField()
     portada = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     director = models.ForeignKey(Directore, on_delete=models.SET_NULL, null=True)
@@ -34,10 +34,10 @@ class Pelicula(models.Model):
 
 class Serie(models.Model):
     titulo = models.CharField(max_length=255)
-    f_inicio = models.DateField()
-    f_fin = models.DateField(null=True)
+    f_inicio = models.IntegerField()
+    f_fin = models.IntegerField(null=True)
     temporadas = models.IntegerField()
-    sinopsis = models.CharField(max_length=255)
+    sinopsis = models.TextField()
     calificacion = models.IntegerField()
     portada = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     director = models.ForeignKey(Directore, on_delete=models.SET_NULL, null=True)

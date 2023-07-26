@@ -1,3 +1,5 @@
+import time
+
 from django.forms import modelform_factory
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
@@ -89,8 +91,8 @@ def eliminarGenero(request, id):
 # vistas peliculas
 def detallePelicula(request, id):
     # persona = Persona.objects.get(pk=id)
-    persona = get_object_or_404(Pelicula, pk=id)
-    return render(request, 'peliculas/pelicula.html', {'persona': persona})
+    pelicula = get_object_or_404(Pelicula, pk=id)
+    return render(request, 'peliculas/detalle.html', {'pelicula': pelicula})
 
 
 # PersonaForm = modelform_factory(Persona, exclude=[])

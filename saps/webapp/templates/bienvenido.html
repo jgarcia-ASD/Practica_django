@@ -22,6 +22,40 @@
         </form>
     </div>
 </nav>
-    {% block content %} {% endblock %}
+{% block content %}
+    <!--
+    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+           {% for Pelicula in li_pelicula %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="2000">
+                <div class="carousel-item active">
+                    <img src="../media/{{ Pelicula.portada }}" class="d-block w-100" alt="...">
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    -->
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for Pelicula in li_pelicula %}
+        <div class="col">
+            <div class="card text-bg-secondary">
+                <div class="col-md-4">
+                    <img src="../media/{{ Pelicula.portada }}" class="card-img-top img-fluid rounded" alt="no encontrada" style="max-height: 200px;">
+                    <div class="card-body">
+                        <div><h5 class="card-title">{{ Pelicula.titulo }}</h5></div>
+                        <!--
+                        <div><p class="card-text">{{ Pelicula.sinopsis }}</p></div>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+
+{% endblock %}
 </body>
 </html>
