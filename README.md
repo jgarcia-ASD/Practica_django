@@ -5,4 +5,13 @@ Este repositorio está diseñado específicamente para practicar y adquirir habi
 esta rama esta hecha con apoyo de un video de youtube el cual la idea es implementar aparte del crud verificacion de usuarios y hacer un despliegue en un server basado en la nube
 
 ### futuras explicaciones de cambios
------------
+#### ahorrar codigo
+podemos implementar un import para importar todas las vistas y no añadir una por una esto eesta en urls
+```
+from task import tasks
+```
+#### crear usuarios 
+django ya ofrece esto si usamos lo siguiente en el archivo views de nuestra app
+```
+from django.contrib.auth.forms import UserCreationForm
+```
