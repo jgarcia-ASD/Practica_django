@@ -23,7 +23,11 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('signup/', views.signup, name='signup'),
     path('tasks/', views.tasks, name='tasks'),
+    path('tasks/completed', views.tasks_complete, name='tasks_completed'),
     path('tasks/created/', views.createtasks, name='createdtasks'),
+    path('tasks/details/<int:id>', views.detail_task, name='detailtasks'),
+    path('tasks/details/<int:id>/complete', views.complete_tasks, name='completetasks'),
+    path('tasks/details/<int:id>/delete', views.delete_task, name='delete_task'),
     path('logout/', views.signout, name='logout'),
     path('signin/', views.signin, name='signin'),
 ]
