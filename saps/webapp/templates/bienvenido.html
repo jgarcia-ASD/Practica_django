@@ -1,79 +1,96 @@
 <!DOCTYPE html>
 <head>
+    {% load static %}
     <meta charset="UTF-8">
     <title>Bienvenido</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css">
 </head>
+<style>
+  .swal-title-dark {
+    color: #ffffff; /* Cambia el color del título a blanco */
+  }
+</style>
 <body class="p-3 mb-2 bg-black text-white">
-<nav class="navbar bg-dark border-bottom border-bottom-dark " data-bs-theme="dark">
+<nav class="navbar navbar-dark bg-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="admin">App Streaming</a>
-        <a class="nav-link" href="{% url 'index' %}">principal</a>
-        {% if user.is_authenticated %}
-            <a class="nav-link" href="{% url 'crearSession' %}">registrar nuevo usuario</a>
-            <a class="nav-link" href="{% url 'cerrar' %}">cerrar sesion</a>
-        {% else %}
-            <a class="nav-link" href="{% url 'inicioSession' %}">inicio de sesion</a>
-        {% endif %}
-        <div class="dropdown">
-            <button class="btn dropdown-toggle border-0" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                cruds
-            </button>
-            <ul class="dropdown-menu text-left mx-3">
-                <li class="mx-4"><a class="nav-link dropdown-item" href="{% url 'indexDirectore' %}">directores</a></li>
-                <li class="mx-4"><a class="nav-link dropdown-item" href="{% url 'indexGenero' %}">generos</a></li>
-                <li class="mx-4"><a class="nav-link dropdown-item" href="{% url 'indexPelicula' %}">peliculas</a></li>
-                <li class="mx-4"><a class="nav-link dropdown-item" href="pruebanuevo">series</a></li>
-            </ul>
+        <span class="navbar-brand mb-0 h1">Projecto Streaming</span>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
+             aria-labelledby="offcanvasDarkNavbarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel">Bienvenido</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Principal</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            Cruds
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark border-0">
+                            <li><a class="dropdown-item" href="{% url 'indexGenero' %}">Generos</a></li>
+                            <li><a class="dropdown-item" href="{% url 'indexDirectore' %}">Directores</a></li>
+                            <li><a class="dropdown-item" href="{% url 'indexPelicula' %}">Peliculas</a></li>
+                            <li><a class="dropdown-item" href="{% url 'indexSerie' %}">Series</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="tooltip"
+                                   data-bs-title="Futuro crud con peliculas y series en una tabla!">total</a></li>
+                        </ul>
+                    </li>
+                    <li class="border-top my-3"></li>
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'crearSession' %}">Crear un
+                                usuario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'adminUser' %}">Administrar los
+                                usuario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'cerrar' %}">Cerrar sesion</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="{% url 'inicioSession' %}">Inicio
+                                sesion</a>
+                        </li>
+                    {% endif %}
+                    <li class="border-top my-3"></li>
+                </ul>
+                <form class="d-flex mt-3" role="search" method="POST">
+                    <input class="form-control me-2" type="search" name="buscar" aria-label="Search"
+                           placeholder="Buscar">
+                    <button class="btn btn-success" type="submit">Buscar</button>
+                    {% csrf_token %}
+                </form>
+            </div>
         </div>
-        <form class="d-flex" method="POST">
-            <input class="form-control me-2" type="text" name="buscar" aria-label="Search" placeholder="Buscar">
-            <button class="btn btn-outline-success" type="submit">Buscar</button>
-            {% csrf_token %}
-        </form>
     </div>
 </nav>
-{% block content %}
-    <!--
-    <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-           {% for Pelicula in li_pelicula %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %}" data-bs-interval="2000">
-                <div class="carousel-item active">
-                    <img src="../media/{{ Pelicula.portada }}" class="d-block w-100" alt="...">
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-    -->
+<div class="content" style="padding-top: 60px;">
+    {% block content %}
+    <h1 class="h1 position-absolute top-50 start-50 translate-middle">Bienvenido</h1>
+    {% endblock %}
+</div>
 
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for Pelicula in li_pelicula %}
-            <div class="col">
-                <div class="card text-bg-secondary">
-                    <div class="col-md-4">
-                        <img src="../media/{{ Pelicula.portada }}" class="card-img-top img-fluid rounded"
-                             alt="no encontrada" style="max-height: 200px;">
-                        <div class="card-body">
-                            <div><h5 class="card-title">{{ Pelicula.titulo }}</h5></div>
-                            <!--
-                        <div><p class="card-text">{{ Pelicula.sinopsis }}</p></div>
-                        -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
-
-
-{% endblock %}
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm"
         crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </html>

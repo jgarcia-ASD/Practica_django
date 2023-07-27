@@ -2,7 +2,7 @@
 
 {% block content %}
     <head>
-        <title>Crud Directores</title>
+        <title>Crud Series</title>
     </head>
     <!-- la alerta para confirmar -->
     {% block js %}
@@ -24,7 +24,7 @@
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = "eliminar_directore/" + id
+                            window.location.href = "eliminar_serie/"+ id
                     }
                 })
             }
@@ -55,41 +55,51 @@
                 {% endfor %}
             });
         </script>
-        <h1 class="h1"><span class="border-bottom border-3 mx-3 my-3">Sistema de administración de Directores</span>
-        </h1>
+        <h1 class="h1"><span class="border-bottom border-3 mx-3 my-4" >Sistema de administración de Series</span></h1>
         <div class="mx-3 my-3">
-            Cantidad de Directores: {{ no_directores }}
+            Cantidad de Series: {{ no_generos }}
         </div>
         <div class="mx-2 my-2">
-            <a href="nuevo_directore" class="badge badge-pill badge-dark">Agregar un nuevo director <i
+            <a href="nueva_serie" class="badge badge-pill badge-dark">Agregar un nueva serie <i
                     class="bi bi-database-fill-add"></i></a>
         </div>
     {% else %}
-        <h1 class="h1"><span class="border-bottom border-3 mx-3 my-3">Todos los registros de Directores</span></h1>
+        <h1 class="h1"><span class="border-bottom border-3 mx-3 my-3">Todos los registros de Series</span></h1>
     {% endif %}
     <div class="mx-3 my-3">
         <table class="table table-bordered table-dark">
             <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Nacionalidad</th>
+            <tr class="mx-4">
+                <th class="mx-4">Portada</th>
+                <th class="mx-4">Titulo</th>
+                <th class="mx-4">Tiempo de emision</th>
+                <th class="mx-4">Temporadas</th>
+                <th class="mx-4" nowrap>Sinopsis</th>
+                <th class="mx-4">Calificacion</th>
                 {% if user.is_authenticated %}
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col" class="mx-4"></th>
+                    <th scope="col" class="mx-4"></th>
                 {% endif %}
             </tr>
             </thead>
             <tbody>
-            {% for Directore in li_directores %}
-                <tr>
-                    <td>{{ Directore.nombre }}</td>
-                    <td>{{ Directore.apellido }}</td>
-                    <td>{{ Directore.nacionalidad }}</td>
+            {% for Serie in li_serie %}
+                <tr class="mx-4">
+                    <td scope="row"><img src="../media/{{ Serie.portada }}" alt="no disponible" class="rounded img-fluid">
+                    </td>
+                    <td>{{ Serie.titulo }}</td>
+                    {% if Serie.f_fin is None %}
+                        <td>{{ Serie.f_inicio}} - Actualidad</td>
+                    {% else %}
+                        <td>{{ Serie.f_inicio}} - {{ Serie.f_fin }}</td>
+                    {% endif %}
+                    <td>{{ Serie.temporadas}}</td>
+                    <td>{{ Serie.sinopsis }}</td>
+                    <td>{{ Serie.calificacion }} de 10</td>
                     {% if user.is_authenticated %}
-                        <td><a href="editar_directore/{{ Directore.id }}" class="badge badge-secondary"><i
+                        <td class="mx-4"><a href="editar_serie/{{ Serie.id }}" class="badge badge-secondary"><i
                                 class="bi bi-pencil-square"></i></a></td>
-                        <td><a href="#" class="badge badge-secondary" onclick="eliminar({{ Directore.id }})"><i
+                        <td class="mx-4"><a href="#" class="badge badge-secondary" onclick="eliminar({{ Serie.id }})"><i
                                 class="bi bi-trash"></i></a></td>
                     {% endif %}
                 </tr>
@@ -97,5 +107,4 @@
             </tbody>
         </table>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 {% endblock %}

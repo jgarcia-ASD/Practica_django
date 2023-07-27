@@ -55,25 +55,14 @@
                 {% endfor %}
             });
         </script>
-        <h1 class="h1"><span class="border-bottom border-3 mx-3 my-3">Sistema de administración de Directores</span>
-        </h1>
-        <div class="mx-3 my-3">
-            Cantidad de Directores: {{ no_directores }}
-        </div>
-        <div class="mx-2 my-2">
-            <a href="nuevo_directore" class="badge badge-pill badge-dark">Agregar un nuevo director <i
-                    class="bi bi-database-fill-add"></i></a>
-        </div>
-    {% else %}
-        <h1 class="h1"><span class="border-bottom border-3 mx-3 my-3">Todos los registros de Directores</span></h1>
+        <h1 class="h1"><span class="border-bottom border-3 mx-3 my-3">Sistema de administración de Usuarios</span></h1>
     {% endif %}
     <div class="mx-3 my-3">
-        <table class="table table-bordered table-dark">
+        <table class="table table-responsive table-bordered table-dark table align-middle">
             <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Nacionalidad</th>
+            <tr class="mx-4">
+                <th scope="col">Nombre</th>
+                <th scope="col" nowrap>Constraseña</th>
                 {% if user.is_authenticated %}
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -81,15 +70,14 @@
             </tr>
             </thead>
             <tbody>
-            {% for Directore in li_directores %}
+            {% for users in li_user %}
                 <tr>
-                    <td>{{ Directore.nombre }}</td>
-                    <td>{{ Directore.apellido }}</td>
-                    <td>{{ Directore.nacionalidad }}</td>
+                    <td>{{ users.username }}</td>
+                    <td>{{ users.password }}</td>
                     {% if user.is_authenticated %}
-                        <td><a href="editar_directore/{{ Directore.id }}" class="badge badge-secondary"><i
+                        <td><a href="editar_directore/{{ users.id }}" class="badge badge-secondary"><i
                                 class="bi bi-pencil-square"></i></a></td>
-                        <td><a href="#" class="badge badge-secondary" onclick="eliminar({{ Directore.id }})"><i
+                        <td><a href="#" class="badge badge-secondary" onclick="eliminar({{ users.id }})"><i
                                 class="bi bi-trash"></i></a></td>
                     {% endif %}
                 </tr>

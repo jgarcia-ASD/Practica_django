@@ -1,10 +1,8 @@
-<!DOCTYPE html>
+{% extends 'plantilla.html' %}
+
+{% block content %}
 <head>
-    <meta charset="UTF-8">
     <title>Editar genero</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
-    <link rel="stylesheet" href="@sweetalert2/theme-dark/dark.css">
 </head>
 <body class="p-3 mb-2 bg-black text-white position-absolute top-50 start-50 translate-middle">
 <h1>Editar genero </h1>
@@ -16,5 +14,4 @@
     <a class="link-danger link-offset-2 link-underline link-underline-opacity-0" href="{% url 'indexGenero' %}"><button type="button" class="btn btn-outline-danger">Regresar</button></a>
     {% csrf_token %}
 </form>
-</body>
-</html>
+{% endblock %}

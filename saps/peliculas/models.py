@@ -34,8 +34,8 @@ class Pelicula(models.Model):
 
 class Serie(models.Model):
     titulo = models.CharField(max_length=255)
-    f_inicio = models.IntegerField()
-    f_fin = models.IntegerField(null=True)
+    f_inicio = models.DateField()
+    f_fin = models.DateField(null=True, blank=True)
     temporadas = models.IntegerField()
     sinopsis = models.TextField()
     calificacion = models.IntegerField()

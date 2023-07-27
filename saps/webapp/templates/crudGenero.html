@@ -2,13 +2,7 @@
 
 {% block content %}
     <head>
-        {% load static %}
-        <meta charset="UTF-8">
         <title>Crud Directores</title>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-              integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
-              crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     </head>
     <!-- la alerta para confirmar -->
     {% block js %}
@@ -25,70 +19,79 @@
                     cancelButtonColor: '#a92a2a',
                     confirmButtonText: 'Si, quiero eliminarlo',
                     background: '#262626',
+                    customClass: {
+                        title: 'swal-title-dark',
+                    }
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Swal.fire({
-                            title: '¡Eliminado!',
-                            text: 'El genero ha sido eliminado.',
-                            color: '#fff',
-                            background: '#262626',
-                            showConfirmButton: false
-                        })
-                        setTimeout(function () {
                             window.location.href = "eliminar_genero/" + id
-                        }, 1500)
-
                     }
                 })
             }
         </script>
     {% endblock %}
-    <body class="p-3 mb-2 bg-black text-white position-relative">
-    <h1 class="h1"><span class="border-bottom border-3">Sistema de administración de Genero</span></h1>
-    <div>
-        Cantidad de Generos: {{ no_generos }}
-    </div>
-    <div>
-        <a href="nuevo_genero" class="badge badge-pill badge-dark">Agregar un nuevo genero <i
-                class="bi bi-database-fill-add"></i></a>
-    </div>
-    {% if mensaje %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            {{ mensaje }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    {% if user.is_authenticated %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                // Verifica si hay un mensaje de error en la plantilla de Django
+                const message = '{{ message }}';
+                {% for message in messages %}
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        showConfirmButton: false,
+                        position: 'top-end',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: '{{message}}'
+                    })
+                {% endfor %}
+            });
+        </script>
+        <h1 class="h1"><span class="border-bottom border-3 mx-3 my-4" >Sistema de administración de Genero</span></h1>
+        <div class="mx-3 my-3">
+            Cantidad de Generos: {{ no_generos }}
         </div>
+        <div class="mx-2 my-2">
+            <a href="nuevo_genero" class="badge badge-pill badge-dark">Agregar un nuevo genero <i
+                    class="bi bi-database-fill-add"></i></a>
+        </div>
+    {% else %}
+        <h1 class="h1"><span class="border-bottom border-3 mx-3 my-3">Todos los registros de Genero</span></h1>
     {% endif %}
-    <div>
+    <div class="mx-3 my-3">
         <table class="table table-bordered table-dark">
             <thead>
-            <tr>
-                <th>tipo</th>
+            <tr class="mx-4">
+                <th class="mx-4">tipo</th>
                 {% if user.is_authenticated %}
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
+                    <th scope="col" class="mx-4"></th>
+                    <th scope="col" class="mx-4"></th>
                 {% endif %}
             </tr>
             </thead>
             <tbody>
             {% for Genero in li_generos %}
-                <tr>
-                    <td>{{ Genero.nombre }}</td>
+                <tr class="mx-4">
+                    <td class="mx-4">{{ Genero.nombre }}</td>
                     {% if user.is_authenticated %}
-                    <td><a href="detalle_genero/{{ Genero.id }}" class="badge badge-secondary"><i
-                            class="bi bi-eye"></i></a></td>
-                    <td><a href="editar_genero/{{ Genero.id }}" class="badge badge-secondary"><i
-                            class="bi bi-pencil-square"></i></a></td>
-                    <td><a href="#" class="badge badge-secondary" onclick="eliminar({{ Genero.id }})"><i
-                            class="bi bi-trash"></i></a></td>
+                        <td class="mx-4"><a href="editar_genero/{{ Genero.id }}" class="badge badge-secondary"><i
+                                class="bi bi-pencil-square"></i></a></td>
+                        <td class="mx-4"><a href="#" class="badge badge-secondary"
+                                            onclick="eliminar({{ Genero.id }})"><i
+                                class="bi bi-trash"></i></a></td>
                     {% endif %}
                 </tr>
             {% endfor %}
             </tbody>
         </table>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    </body>
-    </html>
 {% endblock %}
 

@@ -1,14 +1,74 @@
 {% extends 'bienvenido.html' %}
 
 {% block content %}
-    <h1>crear usuario</h1>
-    {{ error }}
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Verifica si hay un mensaje de error en la plantilla de Django
+            const error = '{{ error }}';
+            {% if error %}
+                const Toast = Swal.mixin({
+                    toast: true,
+                    showConfirmButton: false,
+                    position: 'top-end',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
 
-        <button>
-            Entrar
-        </button>
-    </form>
+                Toast.fire({
+                    icon: 'error',
+                    title: '{{error}}'
+                })
+            {% endif %}
+        });
+    </script>
+    <main class="container-fluid p-3 mb-2 bg-black text-white position-relative top-0 start-50 translate-middle-x">
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <h1 class="text-center">Iniciar session</h1>
+                <form method="POST" class="card text-bg-dark card-body align-center" style="width: 38rem;">
+                    {% csrf_token %}
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="username"><i class="bi bi-person-circle"></i></label>
+                        <input type="text" name="username" id="username" class="form-control"
+                               placeholder="Escriba el usuario">
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="first_name"><i class="bi bi-person-vcard-fill"></i></label>
+                        <input type="text" name="first_name" id="first_name" class="form-control"
+                               placeholder="Escriba el nombre">
+                        <input type="text" name="last_name" id="last_name" class="form-control"
+                               placeholder="Escriba el epellido">
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="password1"><i class="bi bi-file-lock-fill"></i></label>
+                        <input type="password" name="password1" id="password1" class="form-control"
+                               placeholder="Escriba la contraseña">
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="password2"><i class="bi bi-file-lock-fill"></i></label>
+                        <input type="password" name="password2" id="password2" class="form-control"
+                               placeholder="Confirme la contraseña">
+                    </div>
+                    <div class="input-group mb-3">
+                        <label class="input-group-text" for="email"><i class="bi bi-envelope-at-fill"></i></label>
+                        <input type="email" name="email" id="email" class="form-control"
+                               placeholder="Escriba el correo">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="is_superuser" name="is_superuser" value="True">
+                        <label class="form-check-label" for="is_superuser">
+                            Super usuario
+                        </label>
+                    </div>
+                    <button class="btn btn-outline-light" type="submit">
+                        Registrar
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
 {% endblock %}
