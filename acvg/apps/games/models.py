@@ -4,6 +4,9 @@ from django.db import models
 class Country(models.Model):
     country = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.country
+
 class Author(models.Model):
     documento = models.IntegerField(primary_key=True)
     nickname = models.CharField(max_length=100)
@@ -12,5 +15,8 @@ class Author(models.Model):
     email = models.EmailField()
     nationality = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
     descripcion = models.TextField(blank = False)
+
+    def __str__(self):
+        return self.nickname
 
 
