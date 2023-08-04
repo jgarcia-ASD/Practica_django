@@ -14,7 +14,14 @@ class Author(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     email = models.EmailField()
     nationality = models.ForeignKey(Country, on_delete=models.SET_NULL, null=True)
-    descripcion = models.TextField(blank = False)
+    descripcion = models.TextField('Presentate',blank = False)
+
+    #podemos usar class meta para definir como se va a mostrar en admin ejemplo
+    class Meta:
+    #    verbose_name = "Autor"
+    #    verbose_name_plural = "Autores"
+    #    ordering = ["-documento"]
+        ordering = ['nickname']
 
     def __str__(self):
         return self.nickname
