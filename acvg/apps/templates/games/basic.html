@@ -1,0 +1,28 @@
+{% extends 'userviews/father.html' %}
+
+{% block content %}
+<head>
+    <title>Laboratorio</title>
+    
+</head>
+<body>
+    <div id="pixi-canvas" class="mt-auto">
+        <h1>Mi Proyecto con Pixi.js</h1>
+        <script>
+            let app;
+
+            window.onload = function() {
+                app = new PIXI.Application(
+                    {
+                        width: 800,
+                        height: 600,
+                        backgroundColor: 0xAAAAAA
+                    }
+                );
+
+                document.body.appendChild(app.view);
+            }
+        </script>
+    </div>
+</body>
+{% endblock %}

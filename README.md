@@ -12,3 +12,10 @@ para cambiar el idioma del proyecto lo hacemos settings.py
 ```python
 LANGUAGE_CODE = 'es-co'
 ```
+
+#### Implementamos pixi.js 
+para ñadir pixi.js al proyecto es necesario llamar el cdn
+
+```html
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.2.4/pixi.min.js"></script>
+```

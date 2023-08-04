@@ -20,8 +20,5 @@ from apps.games import views as games
 from apps.userviews import views as view
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    #path('vistas/', include(('apps.userviews.urls', 'view'))),
-    path('', view.welcome, name='welcome'),
-    path('prueba', games.prueba, name='prueba'),
+    
 ]
