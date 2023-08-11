@@ -4,48 +4,115 @@
 <head>
     {% load static %}
     <title>Laboratorio</title>
+    <script>
+        let app;
+        let player;
+        const playerTexture = PIXI.Texture.from("{% static 'games/img/player1.png' %}");
+        let keys = {};
+        let keysDiv;
+
+        //cooldown
+        let lastShiftPressTime = 0;
+
+        window.onload = function() {
+            app = new PIXI.Application(
+                {
+                    width: 800,
+                    height: 600,
+                    backgroundColor: 0xAAAAAA
+                }
+            );
+
+            document.body.appendChild(app.view);
+
+            //player object
+            player = new PIXI.Sprite(playerTexture);
+            player.anchor.set(0.5);
+            player.x = app.view.width / 2;
+            player.y = app.view.height / 2;
+
+            app.stage.addChild(player);
+
+            /*
+            //mouse interactions
+            app.stage.eventMode = 'dynamic';
+            app.stage.on('pointermove', movePlayer);
+            */
+
+            //keyboard event handlers
+            window.addEventListener("keydown", keysDown);
+            window.addEventListener("keyup", keysUp);
+
+            app.ticker.add(gameLoop);
+
+            keysDiv = document.querySelector("#keys")
+
+        }
+
+        function keysDown(e){
+            keys[e.keyCode] = true;
+        }
+
+        function keysUp(e){
+            keys[e.keyCode] = false;
+        }
+        /*
+        //detectar mouse
+        function movePlayer(e){
+            let pos = e.data.global
+
+            player.x = pos.x;
+            player.y = pos.y;
+        }
+        */
+
+        function gameLoop(){
+            keysDiv.innerHTML = JSON.stringify(keys);
+
+            const currentTime = new Date().getTime(); // Obtener el tiempo actual en milisegundos
+
+            //w
+            if (keys["87"]){
+                player.y -=5;
+                if (keys["16"] && currentTime - lastShiftPressTime > 10000) {
+                    player.y -=35;
+                    lastShiftPressTime = currentTime;
+                }
+            }
+            //a
+            if (keys["65"]){
+                player.x -=5;
+                if (keys["16"] && currentTime - lastShiftPressTime > 10000 ) {
+                    player.x -=35;
+                    lastShiftPressTime = currentTime;
+                }
+            }
+            //s
+            if (keys["83"]){
+                player.y +=5;
+                if (keys["16"] && currentTime - lastShiftPressTime > 10000) {
+                    player.y +=35;
+                    lastShiftPressTime = currentTime;
+                }
+            }
+            //d
+            if (keys["68"]){
+                player.x +=5;
+                if (keys["16"] && currentTime - lastShiftPressTime > 10000) {
+                    player.x +=35;
+                    lastShiftPressTime = currentTime;
+                }
+            }
+        }
+    </script>
     
 </head>
 <body>
+    <div id="keys">
     <div id="pixi-canvas" class="mt-auto">
         <h1>Mi Proyecto con Pixi.js</h1>
-        <script>
-            let app;
-            let player;
-            const playerTexture = PIXI.Texture.from("{% static 'games/img/player1.png' %}");
-
-            window.onload = function() {
-                app = new PIXI.Application(
-                    {
-                        width: 800,
-                        height: 600,
-                        backgroundColor: 0xAAAAAA
-                    }
-                );
-
-                document.body.appendChild(app.view);
-
-                //player object
-                player = new PIXI.Sprite(playerTexture);
-                player.anchor.set(0.5);
-                player.x = app.view.width / 2;
-                player.y = app.view.height / 2;
-
-                app.stage.addChild(player);
-
-                //mouse interactions
-                app.stage.interactive = true;
-                app.stage.on('pointermove', movePlayer);
-
-            }
-
-            function movePlayer(e){
-                let pos = e.data.global
-
-                player.x = pos.x;
-                player.y = pos.y;
-            }
-        </script>
+        
     </div>
+</div>
 </body>
 {% endblock %}
