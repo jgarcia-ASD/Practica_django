@@ -18,10 +18,16 @@ from django.contrib import admin
 from django.urls import path,include
 from apps.games import views as games
 from apps.userviews import views as view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     #path('vistas/', include(('apps.userviews.urls', 'view'))),
     path('', view.welcome, name='welcome'),
     path('prueba', games.prueba, name='prueba'),
+    path('cubo', games.Cubo, name='gameCubo'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

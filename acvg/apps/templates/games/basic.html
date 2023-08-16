@@ -1,118 +1,268 @@
-{% extends 'userviews/father.html' %}
-
-{% block content %}
 <head>
     {% load static %}
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10.15.5/dist/sweetalert2.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'userviews/css/styles.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.2.4/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Laboratorio</title>
-    <script>
-        let app;
-        let player;
-        const playerTexture = PIXI.Texture.from("{% static 'games/img/player1.png' %}");
-        let keys = {};
-        let keysDiv;
-
-        //cooldown
-        let lastShiftPressTime = 0;
-
-        window.onload = function() {
-            app = new PIXI.Application(
-                {
-                    width: 800,
-                    height: 600,
-                    backgroundColor: 0xAAAAAA
-                }
-            );
-
-            document.body.appendChild(app.view);
-
-            //player object
-            player = new PIXI.Sprite(playerTexture);
-            player.anchor.set(0.5);
-            player.x = app.view.width / 2;
-            player.y = app.view.height / 2;
-
-            app.stage.addChild(player);
-
-            /*
-            //mouse interactions
-            app.stage.eventMode = 'dynamic';
-            app.stage.on('pointermove', movePlayer);
-            */
-
-            //keyboard event handlers
-            window.addEventListener("keydown", keysDown);
-            window.addEventListener("keyup", keysUp);
-
-            app.ticker.add(gameLoop);
-
-            keysDiv = document.querySelector("#keys")
-
-        }
-
-        function keysDown(e){
-            keys[e.keyCode] = true;
-        }
-
-        function keysUp(e){
-            keys[e.keyCode] = false;
-        }
-        /*
-        //detectar mouse
-        function movePlayer(e){
-            let pos = e.data.global
-
-            player.x = pos.x;
-            player.y = pos.y;
-        }
-        */
-
-        function gameLoop(){
-            keysDiv.innerHTML = JSON.stringify(keys);
-
-            const currentTime = new Date().getTime(); // Obtener el tiempo actual en milisegundos
-
-            //w
-            if (keys["87"]){
-                player.y -=5;
-                if (keys["16"] && currentTime - lastShiftPressTime > 10000) {
-                    player.y -=35;
-                    lastShiftPressTime = currentTime;
-                }
-            }
-            //a
-            if (keys["65"]){
-                player.x -=5;
-                if (keys["16"] && currentTime - lastShiftPressTime > 10000 ) {
-                    player.x -=35;
-                    lastShiftPressTime = currentTime;
-                }
-            }
-            //s
-            if (keys["83"]){
-                player.y +=5;
-                if (keys["16"] && currentTime - lastShiftPressTime > 10000) {
-                    player.y +=35;
-                    lastShiftPressTime = currentTime;
-                }
-            }
-            //d
-            if (keys["68"]){
-                player.x +=5;
-                if (keys["16"] && currentTime - lastShiftPressTime > 10000) {
-                    player.x +=35;
-                    lastShiftPressTime = currentTime;
-                }
-            }
-        }
-    </script>
     
 </head>
-<body>
+<body class="p-3 mb-2 bg-black text-white">
     <div id="keys">
     <div id="pixi-canvas" class="mt-auto">
-        <h1>Mi Proyecto con Pixi.js</h1>
+        <script>
+            let app;
+            let player;
+            const playerTexture = PIXI.Texture.from("{% static 'helloworld/img/player1.png' %}");
+            let keys = {};
+            let keysDiv;
+            const obstacles = [];
+            const obstacleSpeed = 6;
+            const numberOfEnemies = 20;
+            const playerSize = 32; // Tamaño del jugador
+            const obstacleSize = 16; // Tamaño de los obstáculos
+            let gamePaused = false;
+            
+            //cooldown
+            let lastShiftPressTime = 0;
+    
+            window.onload = function() {
+                app = new PIXI.Application(
+                    {
+                        width: 800,
+                        height: 600,
+                        transparent: true, // Permite que la imagen de fondo se muestre
+                    }
+                );
+
+                
+                // Cargar la imagen de fondo
+                const background = PIXI.Sprite.from("{% static 'helloworld/img/fondo.jpg' %}");
+                background.width = app.screen.width;
+                background.height = app.screen.height;
+    
+                // Agregar la imagen al escenario como fondo
+                app.stage.addChild(background);
+    
+                document.body.appendChild(app.view);
+    
+                //player object
+                player = new PIXI.Sprite(playerTexture);
+                player.anchor.set(0.5);
+                player.x = app.view.width / 2;
+                player.y = app.view.height / 2;
+    
+                app.stage.addChild(player);
+    
+                /*
+                //mouse interactions
+                app.stage.eventMode = 'dynamic';
+                app.stage.on('pointermove', movePlayer);
+                */
+    
+                //keyboard event handlers
+                window.addEventListener("keydown", keysDown);
+                window.addEventListener("keyup", keysUp);
+    
+                app.ticker.add(gameLoop);
+    
+                keysDiv = document.querySelector("#keys")
+
+                let score = 0; // Puntaje inicial
+                const scoreText = new PIXI.Text(`Puntaje: ${score}`, { fill: 'white' }); // Texto de puntaje
+
+                scoreText.position.set(670, 10); // Posición del texto de puntaje en la esquina izquierda
+                app.stage.addChild(scoreText);
+
+                const scoreInterval = 1000; // Intervalo de tiempo en milisegundos para sumar un punto
+                let lastScoreTime = performance.now(); // Tiempo de la última vez que se sumó un punto
+
+                function updateScore() {
+                    const currentTime = performance.now();
+                    
+                    if (currentTime - lastScoreTime >= scoreInterval) {
+                        score++;
+                        scoreText.text = `Puntaje: ${score}`;
+                        lastScoreTime = currentTime;
+                    }
+                }
+    
+
+            // Función para crear un obstáculo
+            function createObstacle() {
+                for (let i = 0; i < numberOfEnemies; i++) {
+                    const obstacle = PIXI.Sprite.from("{% static 'helloworld/img/enemy2.png' %}");
+                    placeObstacleRandomly(obstacle);
+                    app.stage.addChild(obstacle);
+                    obstacles.push(obstacle);
+                }
+            }
+
+            // Función para colocar un obstáculo aleatoriamente
+            function placeObstacleRandomly(obstacle) {
+                const border = Math.floor(Math.random() * 4); // 0: arriba, 1: izquierda, 2: abajo, 3: derecha
+
+                if (border === 0) {
+                    obstacle.x = Math.random() * app.view.width;
+                    obstacle.y = -obstacle.height;
+                } else if (border === 1) {
+                    obstacle.x = -obstacle.width;
+                    obstacle.y = Math.random() * app.view.height;
+                } else if (border === 2) {
+                    obstacle.x = Math.random() * app.view.width;
+                    obstacle.y = app.view.height;
+                } else if (border === 3) {
+                    obstacle.x = app.view.width;
+                    obstacle.y = Math.random() * app.view.height;
+                }
+            }
+
+            // Función para mover los obstáculos
+            function moveObstacles() {
+                for (const obstacle of obstacles) {
+                    obstacle.x += obstacleSpeed;
+                    obstacle.y += obstacleSpeed;
+                    if (obstacle.x > app.view.width + obstacle.width ||
+                        obstacle.x < -obstacle.width ||
+                        obstacle.y > app.view.height + obstacle.height ||
+                        obstacle.y < -obstacle.height) {
+                        placeObstacleRandomly(obstacle);
+                    }
+                }
+
+            }
+
+            // Llamar a createObstacle para crear un nuevo obstáculo
+            createObstacle();
+
+
+            //funcionalidad teclas wasd
+            function keysDown(e){
+                keys[e.keyCode] = true;
+            }
+    
+            function keysUp(e){
+                keys[e.keyCode] = false;
+            }
+            /*
+            //detectar mouse
+            function movePlayer(e){
+                let pos = e.data.global
+    
+                player.x = pos.x;
+                player.y = pos.y;
+            }
+            */
+
+            function checkCollisions() {
+                for (const obstacle of obstacles) {
+                    if (
+                        player.x < obstacle.x + obstacleSize &&
+                        player.x + playerSize > obstacle.x &&
+                        player.y < obstacle.y + obstacleSize &&
+                        player.y + playerSize > obstacle.y
+                    ) {
+                        // El jugador colisionó con un obstáculo
+                        handleCollision();
+                    }
+                }
+            }
+
+            function handleCollision() {
+                // Muestra el mensaje de reintentar o realiza alguna otra acción
+                // Por ejemplo, puedes mostrar un mensaje en pantalla o reiniciar el juego.
+                console.log("¡Colisión! Intenta de nuevo.");
+            }
+            
+            function handleCollision() {
+                if (gamePaused) {
+                    return; // Evitar mostrar múltiples alertas si el juego ya está pausado
+                }
+            
+                gamePaused = true; // Pausar el juego
+            
+                Swal.fire({
+                    title: "¡Game over!",
+                    text: "Intenta de nuevo",
+                    icon: "error",
+                    showCancelButton: false,
+                    confirmButtonText: "Reintentar",
+                    confirmButtonColor: "#00cc00", // Color verde para el botón de reintentar
+                    //editar colores
+                    iconColor: "#FF0000",
+                    color: "#FFFFFF",
+                    background: "#000000",
+                    allowOutsideClick: false, // Evitar cerrar la alerta haciendo clic afuera
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.reload(); // Recargar la página al reintentar
+                    } 
+                });
+            }
+
+            function gameLoop() {
+                if (gamePaused) {
+                    return; // Salir del bucle si el juego está pausado
+                }            
+
+                //keysDiv.innerHTML = JSON.stringify(keys);
+            
+                const currentTime = performance.now();
+            
+                const playerSpeed = 5;
+                const shiftCooldown = 10000;
+            
+                // Calcular los límites para el jugador
+                const playerHalfWidth = player.width / 2;
+                const playerHalfHeight = player.height / 2;
+                const minX = playerHalfWidth;
+                const minY = playerHalfHeight;
+                const maxX = app.view.width - playerHalfWidth;
+                const maxY = app.view.height - playerHalfHeight;
+            
+                // Movimiento normal
+                if (keys[87] && player.y - playerSpeed >= minY) {
+                    player.y -= playerSpeed;
+                }
+                if (keys[65] && player.x - playerSpeed >= minX) {
+                    player.x -= playerSpeed;
+                }
+                if (keys[83] && player.y + playerSpeed <= maxY) {
+                    player.y += playerSpeed;
+                }
+                if (keys[68] && player.x + playerSpeed <= maxX) {
+                    player.x += playerSpeed;
+                }
+            
+                // Movimiento con Shift
+                if (keys[16] && currentTime - lastShiftPressTime > shiftCooldown) {
+                    if (keys[87] && player.y - 35 >= minY) {
+                        player.y -= 35;
+                    }
+                    if (keys[65] && player.x - 35 >= minX) {
+                        player.x -= 35;
+                    }
+                    if (keys[83] && player.y + 35 <= maxY) {
+                        player.y += 35;
+                    }
+                    if (keys[68] && player.x + 35 <= maxX) {
+                        player.x += 35;
+                    }
+                    lastShiftPressTime = currentTime;
+                }
+                updateScore();
+                checkCollisions();
+                moveObstacles();
+            }
+        }
+
         
+        </script>
+
     </div>
 </div>
 </body>
-{% endblock %}

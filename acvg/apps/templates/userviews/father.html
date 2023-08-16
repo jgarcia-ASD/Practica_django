@@ -9,7 +9,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.2.4/pixi.min.js"></script>
 </head>
 <body class="p-3 mb-2 bg-black text-white">
-    <nav class="navbar navbar-dark fixed-top custom-bg-purple">
+    <nav class="navbar navbar-dark fixed-top custom-bg-purple" id="navbar">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">Projecto Streaming</span>
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
@@ -35,7 +35,7 @@
                                 Juegos
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark border-0">
-                                <li><a class="dropdown-item" href="#">Generos</a></li>
+                                <li><a class="dropdown-item" href="{% url 'gameCubo' %}">Cubo</a></li>
                                 <li><a class="dropdown-item" href="#">Directores</a></li>
                                 <li><a class="dropdown-item" href="#">Peliculas</a></li>
                                 <li><a class="dropdown-item" href="#">Series</a></li>
